@@ -61,37 +61,22 @@ function hidetimes_civicrm_enable(): void {
 //}
 
 /**
- * Implements hook_civicrm_buildForm().
- *
- * Set a default value for an event price set field.
- *
- * @param string $formName
- * @param CRM_Core_Form $form
+ * Alter fields for an event registration to make them into a demo form.
  */
-function hidetimes_civicrm_pageRun($page) {
-  $eventId = $page->getVar('_id');
-  $event = \Civi\Api4\Event::get(FALSE)
-    ->addSelect('Event_times.Hide_times_', 'start_date', 'end_date')
-    ->addWhere('id', '=', $eventId)
-    ->execute()
-    ->first();
-  $startDateTime = $event['start_date'];
-  $endDateTime = $event['end_date'];
-  $hideTimes = $event['Event_times.Hide_times_'];
-  if ($hideTimes) {
-    // Convert the string of date and time into an array, since they are separated by a single space.
-    $startDateTime = explode(' ', $startDateTime);
-    $endDateTime = explode(' ', $endDateTime);
-    // Set new variables with just the date portion of the event's date/time info.
-    $startDate = $startDateTime[0];
-    $endDate = $startDateTime[0];
-
-    // Get the event array out into its own variable.
-    $eventArr = $page->get_template_vars('event');
-    // Modify the start and end date in the variable.
-    $eventArr['event_start_date'] = $startDate;
-    $eventArr['event_end_date'] = $endDate;
-    // Assign that whole array back to event.
-    $page->assign('event', $eventArr);
+function hideTimes_civicrm_alterContent( &$content, $context, $tplName, &$object) {
+  if ($context === 'page' && $tplName === 'CRM/Event/Page/EventInfo.tpl') {
+    $eventId = $object->_id;
+    $event = \Civi\Api4\Event::get(FALSE)
+      ->addSelect('Event_times.Hide_times_', 'start_date', 'end_date')
+      ->addWhere('id', '=', $eventId)
+      ->execute()
+      ->first();
+    $hideTimes = $event['Event_times.Hide_times_'];
+    if ($hideTimes) {
+      // This expression handles the case of the start and end date being the same, i.e. the time is in 'from HH:MM AM|PM to HH:MM AM|PM' format
+      $content = preg_replace('/from&nbsp;\s1?[0-9]:[0-5][0-9]\s(AM|PM)&nbsp;to&nbsp;\s1?[0-9]:[0-5][0-9]\s(AM|PM)/', '', $content);
+      // This expressions handles the case of different start and end dates, i.e. the times appear twice in 'HH:MM AM|PM' format.
+      $content = preg_replace('/\s1?[0-9]:[0-5][0-9]\s(AM|PM)(&nbsp;)?/', '', $content);
+    }
   }
 }
