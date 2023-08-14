@@ -2,16 +2,16 @@
 <extension key="hidetimes" type="module">
   <file>hidetimes</file>
   <name>hidetimes</name>
-  <description>FIXME</description>
+  <description>A CiviCRM extension used to optionally hide times on the Event Info page with RegX</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Brienne Kordis</author>
     <email>brienne@megaphonetech.com</email>
   </maintainer>
   <urls>
-    <url desc="Main Extension Page">http://FIXME</url>
-    <url desc="Documentation">http://FIXME</url>
-    <url desc="Support">http://FIXME</url>
+    <url desc="Main Extension Page">https://github.com/briennekordis/hideTimes</url>
+    <url desc="Documentation">https://github.com/briennekordis/hideTimes/blob/main/README.md</url>
+    <url desc="Support">https://github.com/briennekordis/hideTimes</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
   <releaseDate>2023-07-07</releaseDate>
@@ -20,7 +20,7 @@
   <compatibility>
     <ver>5.63</ver>
   </compatibility>
-  <comments>This is a new, undeveloped module</comments>
+  <comments>This is a custom CiviCRM extension, built and maintained by Megaphone Technology</comments>
   <classloader>
     <psr0 prefix="CRM_" path="."/>
     <psr4 prefix="Civi\" path="Civi"/>
