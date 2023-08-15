@@ -74,8 +74,10 @@ function hideTimes_civicrm_alterContent( &$content, $context, $tplName, &$object
     $hideTimes = $event['Event_times.Hide_times_'];
     if ($hideTimes) {
       // This expression handles the case of the start and end date being the same, i.e. the time is in 'from HH:MM AM|PM to HH:MM AM|PM' format
-      $content = preg_replace('/from&nbsp;\s1?[0-9]:[0-5][0-9]\s(AM|PM)&nbsp;to&nbsp;\s1?[0-9]:[0-5][0-9]\s(AM|PM)/i', '', $content);
+      // Ex: August 1 from 7:00 pm to 10:00 pm -> August 1 
+      $content = preg_replace('/\sfrom&nbsp;\s1?[0-9]:[0-5][0-9]\s(AM|PM)&nbsp;to&nbsp;\s1?[0-9]:[0-5][0-9]\s(AM|PM)/i', '', $content);
       // This expressions handles the case of different start and end dates, i.e. the times appear twice in 'HH:MM AM|PM' format.
+      // Ex: August 1 7:00 PM to August 2 4:00 pm -> August 1 to August 2
       $content = preg_replace('/\s1?[0-9]:[0-5][0-9]\s(AM|PM)(&nbsp;)?/i', '', $content);
     }
   }
